@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Mentoring.Api/Mentoring.Api.csproj" />
+  <Project Path="Mentoring.Core/Mentoring.Core.csproj" />
+  <Project Path="Mentoring.EF/Mentoring.EF.csproj" />
+</Solution>
