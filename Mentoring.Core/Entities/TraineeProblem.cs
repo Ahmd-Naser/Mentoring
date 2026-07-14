@@ -6,16 +6,16 @@ using Mentoring.Core.Enums;
 
 namespace Mentoring.Core.Entities;
 
-public class StudentProblem
+public class TraineeProblem
 {
     public int Id { get; set; }
-    public int UserId { get; set; }
+    public string UserId { get; set; } = default!;
     public int ProblemId { get; set; }
     public int GroupId { get; set; }
 
     public ProblemStatus Status { get; set; } = ProblemStatus.NotOpened;
     public int TimeSpentInSeconds { get; set; } = 0;
-    public DateTime? LastStartedAt { get; set; } = default;
+    public DateTime? LastStartedAt { get; set; } = default!;
 
     public ApplicationUser User { get; set; } = default!;
     public Problem Problem { get; set; } = default!;

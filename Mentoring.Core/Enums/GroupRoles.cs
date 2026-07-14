@@ -7,5 +7,5 @@ namespace Mentoring.Core.Enums;
 public enum GroupRoles
 {
     Mentor = 1,
-    Student = 2,
+    Trainee = 2,
 }

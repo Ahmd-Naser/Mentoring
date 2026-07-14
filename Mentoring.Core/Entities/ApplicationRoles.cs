@@ -8,6 +8,6 @@ namespace Mentoring.Core.Entities;
 
 public class ApplicationRole : IdentityRole
 {
-    public bool IsDefault { get; set; }
-    public bool IsDeleted { get; set; }
+    public bool IsDefault { get; set; } = false;
+    public bool IsDeleted { get; set; } = false;
 }

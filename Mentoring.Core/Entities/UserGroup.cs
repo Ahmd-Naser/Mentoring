@@ -4,7 +4,7 @@ namespace Mentoring.Core.Entities;
 
 public class UserGroup
 {
-    public int UserId { get; set; }
+    public string UserId { get; set; } = default!;
     public int GroupId { get; set; }
     public GroupRoles Role { get; set; }
 

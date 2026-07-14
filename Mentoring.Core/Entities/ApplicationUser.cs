@@ -8,6 +8,8 @@ public class ApplicationUser : IdentityUser
     public string LastName { get; set; } = string.Empty;
     public bool IsDisabled { get; set; }
 
+    public ICollection<Group> OwnedGroups { get; set; } = new List<Group>();
+    public ICollection<Problem> CreatedProblems { get; set; } = new List<Problem>();
     public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
-    public ICollection<StudentProblem> StudentProblems { get; set; } = new List<StudentProblem>();
+    public ICollection<TraineeProblem> TraineeProblems { get; set; } = new List<TraineeProblem>();
 }

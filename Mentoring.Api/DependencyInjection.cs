@@ -21,17 +21,6 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 
-
-        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-        {
-            // إعدادات كلمات المرور (اختياري)
-            options.Password.RequireDigit = true;
-            options.Password.RequiredLength = 8;
-            options.User.RequireUniqueEmail = true;
-        })
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders();
-
         services.AddAuthConfig(configuration);
 
 
@@ -42,7 +31,13 @@ public static class DependencyInjection
     private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
     {
 
-        services.AddIdentity<ApplicationUser, ApplicationRole>()
+        services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+        {
+            // إعدادات كلمات المرور (اختياري)
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 8;
+            options.User.RequireUniqueEmail = true;
+        })
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
 

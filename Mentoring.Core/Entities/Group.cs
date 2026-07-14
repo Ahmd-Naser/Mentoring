@@ -7,8 +7,11 @@ public class Group
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 
+    public string OwnerId { get; set; } = default!;
+    public ApplicationUser Owner { get; set; } = default!;
+
     public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
-    public ICollection<StudentProblem> StudentProblems { get; set; } = new List<StudentProblem>();
+    public ICollection<TraineeProblem> TraineeProblems { get; set; } = new List<TraineeProblem>();
     public ICollection<ProblemGroup> ProblemGroups { get; set; } = new List<ProblemGroup>();
 
 }
