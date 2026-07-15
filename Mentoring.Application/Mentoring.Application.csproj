@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-	  
+    <ProjectReference Include="..\Mentoring.Core\Mentoring.Core.csproj" />
+    <ProjectReference Include="..\Mentoring.EF\Mentoring.EF.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Mentoring.Api/Mentoring.Api.csproj" />
+  <Project Path="Mentoring.Application/Mentoring.Application.csproj" Id="9cb07b09-9e1d-43b3-a41d-d256d95b4073" />
   <Project Path="Mentoring.Core/Mentoring.Core.csproj" />
   <Project Path="Mentoring.EF/Mentoring.EF.csproj" />
 </Solution>
