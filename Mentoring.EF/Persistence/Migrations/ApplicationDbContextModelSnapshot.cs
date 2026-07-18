@@ -147,7 +147,7 @@ namespace Mentoring.EF.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("Mentoring.Core.Entities.Problem", b =>
@@ -185,7 +185,7 @@ namespace Mentoring.EF.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("Problems");
+                    b.ToTable("Problems", (string)null);
                 });
 
             modelBuilder.Entity("Mentoring.Core.Entities.ProblemGroup", b =>
@@ -203,7 +203,7 @@ namespace Mentoring.EF.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("ProblemGroups");
+                    b.ToTable("ProblemGroups", (string)null);
                 });
 
             modelBuilder.Entity("Mentoring.Core.Entities.Submission", b =>
@@ -238,7 +238,7 @@ namespace Mentoring.EF.Migrations
 
                     b.HasIndex("TraineeProblemId");
 
-                    b.ToTable("Submissions");
+                    b.ToTable("Submissions", (string)null);
                 });
 
             modelBuilder.Entity("Mentoring.Core.Entities.TraineeProblem", b =>
@@ -279,7 +279,7 @@ namespace Mentoring.EF.Migrations
                     b.HasIndex("UserId", "ProblemId", "GroupId")
                         .IsUnique();
 
-                    b.ToTable("TraineeProblems");
+                    b.ToTable("TraineeProblems", (string)null);
                 });
 
             modelBuilder.Entity("Mentoring.Core.Entities.UserGroup", b =>
@@ -297,7 +297,7 @@ namespace Mentoring.EF.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("UserGroups");
+                    b.ToTable("UserGroups", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

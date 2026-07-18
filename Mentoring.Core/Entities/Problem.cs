@@ -9,7 +9,7 @@ public class Problem
     public string? Notes { get; set; }
 
     public string CreatedById { get; set; } = default!;
-    public ApplicationUser CreatedBy { get; set; } = default!;
+    public ApplicationUser ApplicationUser { get; set; } = default!;
 
     public ICollection<TraineeProblem> TraineeProblems { get; set; } = new List<TraineeProblem>();
     public ICollection<ProblemGroup> ProblemGroups { get; set; } = new List<ProblemGroup>();

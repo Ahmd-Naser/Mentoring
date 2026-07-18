@@ -1,4 +1,8 @@
-﻿using Mentoring.Core.Entities;
+﻿using Mapster;
+using MapsterMapper;
+using Mentoring.Application.Interfaces;
+using Mentoring.Application.Services;
+using Mentoring.Core.Entities;
 using Mentoring.Core.Interfaces;
 using Mentoring.Core.Settings;
 using Mentoring.EF.Authentication;
@@ -9,6 +13,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FluentValidation;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace Mentoring.Api;
 
@@ -20,12 +26,47 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+        services.AddMapster();
+
+        services.AddValidators();
 
         services.AddAuthConfig(configuration);
 
 
+
+        services.AddScoped<IGroupService, GroupService>();
+
+
         return services;
 
+    }
+
+    private static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        // 1. قراءة وتسجيل جميع الفاليديتورز الموجودة في مشروع Application دفعة واحدة
+        services.AddValidatorsFromAssemblyContaining<Application.Contracts.Group.CreateGroupRequestValidator>();
+
+        // 2. تفعيل الـ Auto Validation لتعترض الطلبات الخاطئة قبل وصولها للـ Controllers
+        services.AddFluentValidationAutoValidation();
+
+        return services;
+    }
+
+    private static IServiceCollection AddMapster(this IServiceCollection services)
+    {
+        // 1. استدعاء الإعدادات العامة لـ Mapster
+        var config = TypeAdapterConfig.GlobalSettings;
+
+        // 2. توجيه Mapster لعمل مسح (Scan) للمشروع الذي يحتوي على الإعدادات
+        // نستخدم أي كلاس موجود داخل Mentoring.Application كدليل للوصول للـ Assembly الخاص به
+        config.Scan(typeof(Application.Mapping.GroupMappingConfig).Assembly);
+        // ملاحظة: يمكنك استبدال GlobalUsings باسم أي كلاس آخر داخل التطبيق مثل GroupMappingConfig
+
+        // 3. تسجيل إعدادات Mapster في الـ Dependency Injection (مهم جداً)
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
+
+        return services;
     }
 
     private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
