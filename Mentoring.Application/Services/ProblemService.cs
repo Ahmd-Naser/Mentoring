@@ -1,0 +1,94 @@
+﻿using Mapster;
+using Mentoring.Application.Contracts.Problem;
+using Mentoring.Application.Interfaces;
+using Mentoring.Core.Abstractions;
+using Mentoring.Core.Errors;
+using Mentoring.EF.Persistence;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Mentoring.Application.Services;
+
+public class ProblemService(ApplicationDbContext context) : IProblemService
+{
+    private readonly ApplicationDbContext _context = context;
+    public async Task<Result<IEnumerable<ProblemResponse>>> GetAllProblemsAsync()
+    {
+        var response = await _context.Problems
+            .ProjectToType<ProblemResponse>()
+            .ToListAsync();
+
+        return Result.Success<IEnumerable<ProblemResponse>>(response);
+    }
+
+    public async Task<Result<ProblemResponse>> GetProblemByIdAsync(int problemId)
+    {
+        var response = await _context.Problems
+            .Where(p => p.Id == problemId)
+            .ProjectToType<ProblemResponse>() 
+            .FirstOrDefaultAsync();
+
+        if(response is null) 
+            return Result.Failure<ProblemResponse>(ProblemErrors.NotFound);
+
+        return Result.Success(response);
+
+    }
+
+    public async Task<Result<ProblemResponse>> CreateProblemAsync(string userId, CreateProblemRequest request)
+    {
+        var problem = new Problem
+        {
+            Name = request.Name,
+            Link = request.Link,
+            Notes = request.Notes,
+            CreatedById = userId
+        };
+
+        await _context.Problems.AddAsync(problem);
+        await _context.SaveChangesAsync();
+
+        var response = problem.Adapt<ProblemResponse>();
+
+        return Result.Success(response);
+    }
+
+    public async Task<Result> UpdateProblemAsync(int problemId , string userId ,CreateProblemRequest request)
+    {
+        var problem = await _context.Problems.FirstOrDefaultAsync(p => p.Id == problemId);
+
+        if(problem is null)
+            return Result.Failure(ProblemErrors.NotFound);
+
+        if(userId != problem.CreatedById)
+            return Result.Failure(ProblemErrors.Forbidden);
+
+        problem = request.Adapt(problem);
+
+        await _context.SaveChangesAsync();
+
+        return Result.Success();
+    }
+    public async Task<Result> DeleteProblemAsync(int problemId , string userId)
+    {
+        var ownerId = await _context.Problems
+            .Where(p => p.Id == problemId)
+            .Select(p => p.CreatedById)
+            .FirstOrDefaultAsync();
+
+        if (ownerId is null)
+            return Result.Failure(ProblemErrors.NotFound);
+
+        if (userId != ownerId)
+            return Result.Failure(ProblemErrors.Forbidden);
+
+        await _context.Problems
+            .Where(p => p.Id == problemId)
+            .ExecuteDeleteAsync();
+
+        return Result.Success();
+    }
+
+}

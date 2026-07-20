@@ -1,6 +1,4 @@
-﻿using Mentoring.Core.Abstractions;
-using Mentoring.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Mentoring.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Mentoring.Application.Contracts.Group;
 
