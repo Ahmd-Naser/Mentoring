@@ -8,5 +8,6 @@ public enum ProblemStatus
 {
     NotOpened = 1,
     InProgress = 2,
-    Submitted = 3,
+    Attempted = 3,
+    Successful = 4
 }
