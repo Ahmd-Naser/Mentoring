@@ -11,7 +11,9 @@ public class SubmissionConfiguration : IEntityTypeConfiguration<Submission>
 {
     public void Configure(EntityTypeBuilder<Submission> builder)
     {
-        builder.HasKey(s => s.Id);  
+        builder.HasKey(s => s.Id);
+
+        builder.HasIndex(s => s.CodeLink);
 
         builder.Property(s => s.CodeLink)
             .IsRequired()
