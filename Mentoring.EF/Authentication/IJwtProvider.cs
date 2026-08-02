@@ -1,6 +1,6 @@
 ﻿using Mentoring.Core.Entities;
 
-namespace Mentoring.Core.Interfaces;
+namespace Mentoring.EF.Authentication;
 
 public interface IJwtProvider
 {

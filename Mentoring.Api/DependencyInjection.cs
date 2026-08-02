@@ -1,14 +1,11 @@
-﻿using Mapster;
-using MapsterMapper;
+﻿using MapsterMapper;
 using Mentoring.Application.Interfaces;
 using Mentoring.Application.Services;
 using Mentoring.Core.Entities;
-using Mentoring.Core.Interfaces;
 using Mentoring.Core.Settings;
 using Mentoring.EF.Authentication;
 using Mentoring.EF.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +35,7 @@ public static class DependencyInjection
         services.AddScoped<IProblemService, ProblemService>();
         services.AddScoped<ITraineeProblemService, TraineeProblemService>();
         services.AddScoped<ISubmissionService, SubmissionService>();
+        services.AddScoped<IAuthService, AuthService>();
 
 
         return services;

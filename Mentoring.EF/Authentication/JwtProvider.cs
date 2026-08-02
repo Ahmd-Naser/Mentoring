@@ -1,5 +1,4 @@
 ﻿using Mentoring.Core.Entities;
-using Mentoring.Core.Interfaces;
 using Mentoring.Core.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

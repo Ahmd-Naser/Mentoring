@@ -30,7 +30,7 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
             SecurityStamp = DefaultUsers.AdminSecurityStamp,
             ConcurrencyStamp = DefaultUsers.AdminConcurrencyStamp,
             EmailConfirmed = true,
-            PasswordHash = "AQAAAAIAAYagAAAAEKM/hAKble5pM4y/Lpy1nvDRykBSI11RzTrE6CVO/+SvLNMmEQZLkbRNb5bm6CS4Tg=="
+            PasswordHash = "AQAAAAIAAYagAAAAEAvM/Qw70EyYBfjYuy3Zp/Ga8VMIAlUD8Azsw7FphNqP8PpwRiPIRFp5FlJ/eJajyQ=="
         });
 
         //Console.WriteLine(hasher.HashPassword(null!, DefaultUsers.AdminPassword));
