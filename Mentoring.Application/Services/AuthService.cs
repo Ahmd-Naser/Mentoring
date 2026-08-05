@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mentoring.EF.Authentication;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Mentoring.Application.Services;
 
-public class AuthService(UserManager<ApplicationUser> userManager) : IAuthService
+public class AuthService(UserManager<ApplicationUser> userManager , IJwtProvider jwtProvider) : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly IJwtProvider _jwtProvider = jwtProvider;
 
+    private readonly int refreshTokenExpiryDays = 14;
     public async Task<AuthResponse?> GetTokenAsync(string email, string password, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByNameAsync(email);
@@ -21,11 +25,91 @@ public class AuthService(UserManager<ApplicationUser> userManager) : IAuthServic
         if (!isValidPassword)
             return null;
 
+        var (token , expiresIn) = _jwtProvider.GenerateToken(user);
+        
+        var refreshToken = GenerateRefreshToken();
+        var refreshTokenExpiration = DateTime.UtcNow.AddDays(refreshTokenExpiryDays);
+
+        user.RefreshTokens.Add(new RefreshToken
+        {
+            Token = refreshToken,
+            ExpiresOn = refreshTokenExpiration,
+            CreatedOn = DateTime.UtcNow
+        });
+
+        await _userManager.UpdateAsync(user);
 
 
-        return new AuthResponse(Guid.NewGuid().ToString(),
-            user.Email , user.FirstName , user.LastName , 
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30",
-            5000);
+
+        return new AuthResponse(user.Id,
+            user.Email , user.FirstName , user.LastName , token, expiresIn, refreshToken, refreshTokenExpiration
+        );
     }
+
+
+    public async Task<AuthResponse?> GetRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken = default)
+    {
+        var userId = _jwtProvider.ValidateToken(token);
+
+        if (userId is null)
+            return null;
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user is null)
+            return null;
+
+        var userRefreshToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken && x.IsActive);
+        
+        if (userRefreshToken is null)
+            return null;
+        
+        userRefreshToken.RevokedOn = DateTime.UtcNow;
+
+        var (newToken, expiresIn) = _jwtProvider.GenerateToken(user);
+
+        var newRefreshToken = GenerateRefreshToken();
+        var refreshTokenExpiration = DateTime.UtcNow.AddDays(refreshTokenExpiryDays);
+
+        user.RefreshTokens.Add(new RefreshToken
+        {
+            Token = newRefreshToken,
+            ExpiresOn = refreshTokenExpiration,
+            CreatedOn = DateTime.UtcNow
+        });
+
+        await _userManager.UpdateAsync(user);
+
+        return new AuthResponse(user.Id,
+            user.Email, user.FirstName, user.LastName, newToken, expiresIn, newRefreshToken, refreshTokenExpiration
+        );
+    }
+    public async Task<bool> RevokeRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken = default)
+    {
+        var userId = _jwtProvider.ValidateToken(token);
+
+        if (userId is null)
+            return false;
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user is null)
+            return false;
+
+        var userRefreshToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken && x.IsActive);
+
+        if (userRefreshToken is null)
+            return false;
+
+        userRefreshToken.RevokedOn = DateTime.UtcNow;
+
+        await _userManager.UpdateAsync(user);
+
+        return true;
+    }
+    private static string GenerateRefreshToken()
+    {
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+    }
+
 }

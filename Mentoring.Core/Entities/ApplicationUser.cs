@@ -8,6 +8,8 @@ public class ApplicationUser : IdentityUser
     public string LastName { get; set; } = string.Empty;
     public bool IsDisabled { get; set; }
 
+    public List<RefreshToken> RefreshTokens { get; set; } = [];
+
     public ICollection<Group> OwnedGroups { get; set; } = new List<Group>();
     public ICollection<Problem> CreatedProblems { get; set; } = new List<Problem>();
     public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();

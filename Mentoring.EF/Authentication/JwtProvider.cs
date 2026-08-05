@@ -13,7 +13,7 @@ public class JwtProvider(IOptions<JwtOptions> jwtOptions) : IJwtProvider
 {
     private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
-    public (string token, int expiresIn) GenerateToken(ApplicationUser user, IEnumerable<string> roles, IEnumerable<string> permissions)
+    public (string token, int expiresIn) GenerateToken(ApplicationUser user)
     {
         Claim[] claims = [
             new(JwtRegisteredClaimNames.Sub , user.Id),
@@ -21,8 +21,7 @@ public class JwtProvider(IOptions<JwtOptions> jwtOptions) : IJwtProvider
             new(JwtRegisteredClaimNames.GivenName , user.FirstName!),
             new(JwtRegisteredClaimNames.FamilyName , user.LastName!),
             new(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
-            new(nameof (roles) , JsonSerializer.Serialize(roles) , JsonClaimValueTypes.JsonArray),
-            new(nameof (permissions) , JsonSerializer.Serialize(permissions) , JsonClaimValueTypes.JsonArray )
+
 
         ];
 
