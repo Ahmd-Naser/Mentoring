@@ -52,7 +52,7 @@ public class AuthController(IAuthService authService) : ControllerBase
         var authResult = await _authService.RegisterAsync(request, cancellationToken);
 
         return authResult.IsSuccess
-            ? Ok(authResult.Value)
+            ? Ok()
             : authResult.ToProblem();
 
     }

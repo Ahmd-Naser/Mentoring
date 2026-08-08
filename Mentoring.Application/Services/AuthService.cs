@@ -3,6 +3,7 @@ using Mentoring.Core.Errors;
 using Mentoring.EF.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,22 +12,25 @@ using System.Text;
 
 namespace Mentoring.Application.Services;
 
-public class AuthService(UserManager<ApplicationUser> userManager , IJwtProvider jwtProvider) : IAuthService
+public class AuthService(UserManager<ApplicationUser> userManager ,
+    SignInManager<ApplicationUser> signInManager ,
+    IJwtProvider jwtProvider) : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
     private readonly IJwtProvider _jwtProvider = jwtProvider;
 
     private readonly int refreshTokenExpiryDays = 14;
     public async Task<Result<AuthResponse>> GetTokenAsync(string email, string password, CancellationToken cancellationToken = default)
     {
-        var user = await _userManager.FindByNameAsync(email);
+         
 
-        if (user is null)
+        if (await _userManager.FindByNameAsync(email) is not { } user )
             return Result.Failure<AuthResponse>(UserErrors.InvalidCredentials);
 
-        var isValidPassword = await _userManager.CheckPasswordAsync(user, password);
+        var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: false, lockoutOnFailure: false);
 
-        if (!isValidPassword)
+        if (!result.Succeeded)
             return Result.Failure<AuthResponse>(UserErrors.InvalidCredentials);
 
         var (token , expiresIn) = _jwtProvider.GenerateToken(user);
@@ -114,12 +118,12 @@ public class AuthService(UserManager<ApplicationUser> userManager , IJwtProvider
         return Result.Success();
     }
 
-    public async Task<Result<AuthResponse>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
         var existingUser = await _userManager.Users.AnyAsync(u => u.Email == request.Email, cancellationToken);
 
         if(existingUser)
-            return Result.Failure<AuthResponse>(UserErrors.DuplicatedEmail);
+            return Result.Failure(UserErrors.DuplicatedEmail);
 
         
         var user = request.Adapt<ApplicationUser>();
@@ -128,30 +132,17 @@ public class AuthService(UserManager<ApplicationUser> userManager , IJwtProvider
 
         if (result.Succeeded)
         {
-            var (token, expiresIn) = _jwtProvider.GenerateToken(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            var refreshToken = GenerateRefreshToken();
-            var refreshTokenExpiration = DateTime.UtcNow.AddDays(refreshTokenExpiryDays);
+            //TODO: Send confirmation email
 
-            user.RefreshTokens.Add(new RefreshToken
-            {
-                Token = refreshToken,
-                ExpiresOn = refreshTokenExpiration,
-                CreatedOn = DateTime.UtcNow
-            });
-
-            await _userManager.UpdateAsync(user);
-
-            var response = new AuthResponse(user.Id,
-                user.Email, user.FirstName, user.LastName, token, expiresIn, refreshToken, refreshTokenExpiration
-            );
-
-            return Result.Success(response);
+            return Result.Success();
         }
 
         var error = result.Errors.First();
         
-        return Result.Failure<AuthResponse>(new Error(error.Code , error.Description , StatusCodes.Status400BadRequest));
+        return Result.Failure(new Error(error.Code , error.Description , StatusCodes.Status400BadRequest));
 
     }
     private static string GenerateRefreshToken()
