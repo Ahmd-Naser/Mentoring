@@ -37,6 +37,8 @@ public static class DependencyInjection
         services.AddScoped<ISubmissionService, SubmissionService>();
         services.AddScoped<IAuthService, AuthService>();
 
+        services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings) ));
+
 
         return services;
 
