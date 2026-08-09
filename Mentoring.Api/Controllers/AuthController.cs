@@ -66,4 +66,14 @@ public class AuthController(IAuthService authService) : ControllerBase
             ? Ok()
             : authResult.ToProblem();
     }
+
+    [HttpPost("resend-confirmation-email")]
+    public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendConfirmationEmailRequest request, CancellationToken cancellationToken)
+    {
+        var authResult = await _authService.ResendConfirmationEmailAsync(request, cancellationToken);
+
+        return authResult.IsSuccess
+            ? Ok()
+            : authResult.ToProblem();
+    }
 }

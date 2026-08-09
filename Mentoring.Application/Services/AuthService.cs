@@ -184,6 +184,27 @@ public class AuthService(UserManager<ApplicationUser> userManager ,
         return Result.Failure(new Error(error.Code, error.Description, StatusCodes.Status400BadRequest));
 
     }
+
+    public async Task<Result> ResendConfirmationEmailAsync(ResendConfirmationEmailRequest request, CancellationToken cancellationToken = default)
+    {
+        
+        if(await _userManager.FindByEmailAsync(request.Email) is not { } user)
+            return Result.Success();
+
+        if (user.EmailConfirmed)
+            return Result.Failure(UserErrors.DuplicatedConfirmation);
+
+
+
+        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+        _logger.LogInformation("User {Email} registered successfully. Confirmation code: {Code}", user.Email, code);
+        //TODO: Send confirmation email
+
+        return Result.Success();
+    }
+
     private static string GenerateRefreshToken()
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
