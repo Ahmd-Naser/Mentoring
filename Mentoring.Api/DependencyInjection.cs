@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FluentValidation;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Mentoring.Api;
 
@@ -36,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<ITraineeProblemService, TraineeProblemService>();
         services.AddScoped<ISubmissionService, SubmissionService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IEmailSender, EmailService>();
 
         services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings) ));
 
