@@ -76,4 +76,24 @@ public class AuthController(IAuthService authService) : ControllerBase
             ? Ok()
             : authResult.ToProblem();
     }
+
+    [HttpPost("forget-password")]
+    public async Task<IActionResult> ForgetPassword([FromBody] ForgetPasswordRequest request, CancellationToken cancellationToken)
+    {
+        var authResult = await _authService.SendResetPasswordCodeAsync(request.Email);
+
+        return authResult.IsSuccess
+            ? Ok()
+            : authResult.ToProblem();
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken)
+    {
+        var authResult = await _authService.ResetPasswordAsync(request);
+
+        return authResult.IsSuccess
+            ? Ok()
+            : authResult.ToProblem();
+    }
 }
