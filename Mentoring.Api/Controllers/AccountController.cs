@@ -36,4 +36,16 @@ public class AccountController(IUserService userService) : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPut("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        var userId = User.GetUserId();
+
+        var result = await _userService.ChangePasswordAsync(userId!, request);
+
+        return result.IsSuccess
+            ? NoContent()
+            : result.ToProblem();
+    }
 }
