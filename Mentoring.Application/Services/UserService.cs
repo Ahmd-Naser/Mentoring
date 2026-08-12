@@ -23,11 +23,20 @@ public class UserService(UserManager<ApplicationUser> userManager) : IUserServic
 
     public async Task<Result> UpdateProfileAsync(string userId, UpdateProfileRequest request)
     {
-        var user = await _userManager.FindByIdAsync(userId);
+        //var user = await _userManager.FindByIdAsync(userId);
        
-        user = request.Adapt(user);
+        //user = request.Adapt(user);
 
-        await _userManager.UpdateAsync(user!);
+        //await _userManager.UpdateAsync(user!);
+
+        await _userManager.Users
+            .Where(u => u.Id == userId)
+            .ExecuteUpdateAsync(
+                setters => setters
+                    .SetProperty(u => u.FirstName, request.FirstName)
+                    .SetProperty(u => u.LastName, request.LastName)
+
+            );
 
         return Result.Success();
     }
