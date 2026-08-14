@@ -15,7 +15,8 @@ public class ProblemsController(IProblemService problemService) : ControllerBase
     [HttpGet("")]
     public async Task<IActionResult> GetAllProblems()
     {
-        var result = await _problemService.GetAllProblemsAsync();
+        var userId = User.GetUserId();
+        var result = await _problemService.GetAllProblemsAsync(userId!);
 
         return result.IsSuccess
             ? Ok(result.Value)
@@ -25,7 +26,8 @@ public class ProblemsController(IProblemService problemService) : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetProblemById([FromRoute] int id)
     {
-        var result = await _problemService.GetProblemByIdAsync(id);
+        var userId = User.GetUserId();
+        var result = await _problemService.GetProblemByIdAsync(id, userId!);
         return result.IsSuccess
             ? Ok(result.Value)
             : result.ToProblem();

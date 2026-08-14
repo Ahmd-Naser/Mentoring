@@ -45,7 +45,7 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateGroup([FromRoute] int id, [FromBody] CreateGroupRequest request)
     {
-        // Assuming you have a way to get the current user's ID, e.g., from claims
+
         var userId = User.GetUserId();  
         var result = await _groupService.UpdateAsync(id, request, userId!);
         return result.IsSuccess
@@ -56,8 +56,7 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteGroup([FromRoute] int id)
     {
-        // Assuming you have a way to get the current user's ID, e.g., from claims
-        var userId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var userId = User.GetUserId(); 
         var result = await _groupService.DeleteAsync(id, userId!    );
         return result.IsSuccess
             ? NoContent()
@@ -67,8 +66,7 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     [HttpPost("{groupId:int}/trainees")]
     public async Task<IActionResult> AddTraineeToGroup([FromRoute] int groupId, [FromBody] AddTraineeRequest request)
     {
-        // Assuming you have a way to get the current user's ID, e.g., from claims
-        var requestorId = User.GetUserId()  ; // Replace "sub" with the appropriate claim type
+        var requestorId = User.GetUserId()  ; 
         var result = await _groupService.AddTraineeToGroupAsync(groupId, request, requestorId!);
         return result.IsSuccess
             ? NoContent()
@@ -78,8 +76,7 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     [HttpDelete("{groupId:int}/trainees")]
     public async Task<IActionResult> RemoveTraineeFromGroup([FromRoute] int groupId, [FromBody] AddTraineeRequest request)
     {
-        // Assuming you have a way to get the current user's ID, e.g., from claims
-        var requestorId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var requestorId = User.GetUserId();
         var result = await _groupService.RemoveTraineeFromGroupAsync(groupId, request, requestorId!);
         return result.IsSuccess
             ? NoContent()
@@ -100,8 +97,7 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     [HttpPost("{groupId:int}/problems/{problemId:int}")]
     public async Task<IActionResult> AddProblemToGroup([FromRoute] int groupId, [FromRoute] int problemId)
     {
-        // Assuming you have a way to get the current user's ID, e.g., from claims
-        var requestorId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var requestorId = User.GetUserId();
         var result = await _groupService.AddProblemToGroupAsync(groupId, problemId, requestorId!);
         return result.IsSuccess
             ? NoContent()
@@ -111,8 +107,7 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     [HttpDelete("{groupId:int}/problems/{problemId:int}")]
     public async Task<IActionResult> RemoveProblemFromGroup([FromRoute] int groupId, [FromRoute] int problemId)
     {
-        // Assuming you have a way to get the current user's ID, e.g., from claims
-        var requestorId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var requestorId = User.GetUserId();
         var result = await _groupService.RemoveProblemFromGroupAsync(groupId, problemId, requestorId!);
         return result.IsSuccess
             ? NoContent()

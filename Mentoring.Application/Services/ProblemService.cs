@@ -14,19 +14,20 @@ namespace Mentoring.Application.Services;
 public class ProblemService(ApplicationDbContext context) : IProblemService
 {
     private readonly ApplicationDbContext _context = context;
-    public async Task<Result<IEnumerable<ProblemResponse>>> GetAllProblemsAsync()
+    public async Task<Result<IEnumerable<ProblemResponse>>> GetAllProblemsAsync(string userId)
     {
         var response = await _context.Problems
+            .Where(p => p.CreatedById == userId)
             .ProjectToType<ProblemResponse>()
             .ToListAsync();
 
         return Result.Success<IEnumerable<ProblemResponse>>(response);
     }
 
-    public async Task<Result<ProblemResponse>> GetProblemByIdAsync(int problemId)
+    public async Task<Result<ProblemResponse>> GetProblemByIdAsync(int problemId, string userId)
     {
         var response = await _context.Problems
-            .Where(p => p.Id == problemId)
+            .Where(p => p.Id == problemId && p.CreatedById == userId)
             .ProjectToType<ProblemResponse>() 
             .FirstOrDefaultAsync();
 

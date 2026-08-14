@@ -78,7 +78,7 @@ public class TraineeProblemsController(ITraineeProblemService traineeProblemServ
     [HttpDelete("group/{groupId}/problem/{problemId}")]
     public async Task<IActionResult> DeleteProblem([FromRoute]int groupId, [FromRoute] int problemId)
     {
-        var userId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var userId = User.GetUserId(); 
         var result = await _traineeProblemService.DeleteTraineeProblemAsync(userId!, groupId, problemId, cancellationToken: default);
         return result.IsSuccess
             ? NoContent()
