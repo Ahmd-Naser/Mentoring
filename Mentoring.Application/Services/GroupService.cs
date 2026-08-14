@@ -48,7 +48,7 @@ public class GroupService(ApplicationDbContext context) : IGroupService
         await _context.AddAsync(group);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(group.Adapt<GroupResponse>());
+        return await GetByIdAsync(group.Id, cancellationToken);
     }
 
     public async Task<Result> UpdateAsync(int id, CreateGroupRequest request, string userId, CancellationToken cancellationToken = default)

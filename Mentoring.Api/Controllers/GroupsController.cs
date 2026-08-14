@@ -1,11 +1,13 @@
 ﻿using Mentoring.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Mentoring.Application.Contracts.Group;
+
 
 namespace Mentoring.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class GroupsController(IGroupService groupService) : ControllerBase
 {
     private readonly IGroupService _groupService = groupService;
@@ -30,10 +32,10 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     [HttpPost("")]
     public async Task<IActionResult> CreateGroup([FromBody] CreateGroupRequest request)
     {
-        // Assuming you have a way to get the current user's ID, e.g., from claims
-        var ownerId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
         
-        var result = await _groupService.CreateAsync(request, ownerId);
+        var ownerId = User.GetUserId();
+        
+        var result = await _groupService.CreateAsync(request, ownerId!);
 
         return result.IsSuccess
             ? CreatedAtAction(nameof(GetGroupById), new { id = result.Value.Id }, result.Value)
@@ -44,8 +46,8 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     public async Task<IActionResult> UpdateGroup([FromRoute] int id, [FromBody] CreateGroupRequest request)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var userId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _groupService.UpdateAsync(id, request, userId);
+        var userId = User.GetUserId();  
+        var result = await _groupService.UpdateAsync(id, request, userId!);
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();
@@ -55,8 +57,8 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     public async Task<IActionResult> DeleteGroup([FromRoute] int id)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var userId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _groupService.DeleteAsync(id, userId);
+        var userId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var result = await _groupService.DeleteAsync(id, userId!    );
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();
@@ -66,8 +68,8 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     public async Task<IActionResult> AddTraineeToGroup([FromRoute] int groupId, [FromBody] AddTraineeRequest request)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var requestorId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _groupService.AddTraineeToGroupAsync(groupId, request, requestorId);
+        var requestorId = User.GetUserId()  ; // Replace "sub" with the appropriate claim type
+        var result = await _groupService.AddTraineeToGroupAsync(groupId, request, requestorId!);
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();
@@ -77,8 +79,8 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     public async Task<IActionResult> RemoveTraineeFromGroup([FromRoute] int groupId, [FromBody] AddTraineeRequest request)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var requestorId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _groupService.RemoveTraineeFromGroupAsync(groupId, request, requestorId);
+        var requestorId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var result = await _groupService.RemoveTraineeFromGroupAsync(groupId, request, requestorId!);
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();
@@ -99,8 +101,8 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     public async Task<IActionResult> AddProblemToGroup([FromRoute] int groupId, [FromRoute] int problemId)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var requestorId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _groupService.AddProblemToGroupAsync(groupId, problemId, requestorId);
+        var requestorId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var result = await _groupService.AddProblemToGroupAsync(groupId, problemId, requestorId!);
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();
@@ -110,8 +112,8 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     public async Task<IActionResult> RemoveProblemFromGroup([FromRoute] int groupId, [FromRoute] int problemId)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var requestorId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _groupService.RemoveProblemFromGroupAsync(groupId, problemId, requestorId);
+        var requestorId = User.GetUserId(); // Replace "sub" with the appropriate claim type
+        var result = await _groupService.RemoveProblemFromGroupAsync(groupId, problemId, requestorId!);
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();

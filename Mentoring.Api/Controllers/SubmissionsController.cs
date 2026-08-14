@@ -7,6 +7,7 @@ namespace Mentoring.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class SubmissionsController(ISubmissionService submissionService) : ControllerBase
 {
     private readonly ISubmissionService _submissionService = submissionService;

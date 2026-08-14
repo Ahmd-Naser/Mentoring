@@ -7,6 +7,7 @@ namespace Mentoring.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ProblemsController(IProblemService problemService) : ControllerBase
 {
     private readonly IProblemService _problemService = problemService;
@@ -34,8 +35,8 @@ public class ProblemsController(IProblemService problemService) : ControllerBase
     public async Task<IActionResult> CreateProblem([FromBody] CreateProblemRequest request)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var userId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _problemService.CreateProblemAsync(userId, request);
+        var userId = User.GetUserId();
+        var result = await _problemService.CreateProblemAsync(userId!, request);
         return result.IsSuccess
             ? CreatedAtAction(nameof(GetProblemById), new { id = result.Value.Id }, result.Value)
             : result.ToProblem();
@@ -46,8 +47,8 @@ public class ProblemsController(IProblemService problemService) : ControllerBase
     public async Task<IActionResult> UpdateProblem([FromRoute] int id, [FromBody] CreateProblemRequest request)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var userId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _problemService.UpdateProblemAsync(id, userId, request);
+        var userId = User.GetUserId();
+        var result = await _problemService.UpdateProblemAsync(id, userId!, request);
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();
@@ -57,8 +58,8 @@ public class ProblemsController(IProblemService problemService) : ControllerBase
     public async Task<IActionResult> DeleteProblem([FromRoute] int id)
     {
         // Assuming you have a way to get the current user's ID, e.g., from claims
-        var userId = "b9e76e00-6f22-4003-b7a3-c6cde7244966"; // Replace "sub" with the appropriate claim type
-        var result = await _problemService.DeleteProblemAsync(id, userId);
+        var userId = User.GetUserId();
+        var result = await _problemService.DeleteProblemAsync(id, userId!);
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();

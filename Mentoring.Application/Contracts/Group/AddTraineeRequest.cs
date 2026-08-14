@@ -4,4 +4,6 @@ using System.Text;
 
 namespace Mentoring.Application.Contracts.Group;
 
-public record AddTraineeRequest(string Email);
+public record AddTraineeRequest(
+    string Email
+);
