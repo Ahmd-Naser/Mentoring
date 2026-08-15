@@ -1,9 +1,4 @@
-﻿using Mentoring.Api.Extensions;
-using Mentoring.Application.Contracts.Users;
-using Mentoring.Application.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿
 
 namespace Mentoring.Api.Controllers;
 

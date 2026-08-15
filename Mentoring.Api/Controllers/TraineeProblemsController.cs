@@ -1,7 +1,4 @@
 ﻿using Mentoring.Application.Contracts.TraineeProblem;
-using Mentoring.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Mentoring.Api.Controllers;
 

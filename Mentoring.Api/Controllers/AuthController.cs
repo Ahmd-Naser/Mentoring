@@ -1,10 +1,4 @@
 ﻿using Mentoring.Application.Contracts.Authentication;
-using Mentoring.Application.Interfaces;
-using Mentoring.Core.Abstractions.Consts;
-using Mentoring.Core.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Mentoring.Api.Controllers;
 

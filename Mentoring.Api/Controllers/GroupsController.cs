@@ -1,9 +1,4 @@
-﻿using Mentoring.Application.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-
-namespace Mentoring.Api.Controllers;
+﻿namespace Mentoring.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

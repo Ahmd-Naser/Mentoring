@@ -1,7 +1,4 @@
 ﻿using Mentoring.Application.Contracts.Submission;
-using Mentoring.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Mentoring.Api.Controllers;
 
