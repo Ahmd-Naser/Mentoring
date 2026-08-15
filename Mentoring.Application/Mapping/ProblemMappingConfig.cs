@@ -1,8 +1,4 @@
-﻿using Mapster;
-
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mentoring.Application.Contracts.Problem;
 
 namespace Mentoring.Application.Mapping;
 
