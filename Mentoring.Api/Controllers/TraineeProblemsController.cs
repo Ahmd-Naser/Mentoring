@@ -40,7 +40,7 @@ public class TraineeProblemsController(ITraineeProblemService traineeProblemServ
             : result.ToProblem();
     }
 
-    [HttpGet("trainee-problem/{traineeProblemId}")]
+    [HttpGet("{traineeProblemId}")]
     public async Task<IActionResult> GetTraineeProblemById([FromRoute] int traineeProblemId)
     {
         var userId = User.GetUserId();

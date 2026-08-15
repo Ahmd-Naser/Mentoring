@@ -8,6 +8,6 @@ namespace Mentoring.Application.Contracts.Submission;
 public record SubmissionRequest(
     string CodeLink,
     string? Notes,
-    SubmissionVerdict Verdict,
-    int TraineeProblemId
+    SubmissionVerdict Verdict
+    
 );

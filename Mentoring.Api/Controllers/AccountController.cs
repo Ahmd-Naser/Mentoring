@@ -1,6 +1,4 @@
-﻿
-
-namespace Mentoring.Api.Controllers;
+﻿namespace Mentoring.Api.Controllers;
 
 [Route("me")]
 [ApiController]

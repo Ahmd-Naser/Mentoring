@@ -30,17 +30,17 @@ public class SubmissionsController(ISubmissionService submissionService) : Contr
 
     }
 
-    [HttpPost("submission")]
-    public async Task<IActionResult> AddSubmission( [FromBody] SubmissionRequest request)
+    [HttpPost("trainee-problem/{traineeProblemId}")]
+    public async Task<IActionResult> AddSubmission([FromRoute] int traineeProblemId, [FromBody] SubmissionRequest request)
     {
-        var result = await _submissionService.CreateSubmissionAsync( request);
+        var result = await _submissionService.CreateSubmissionAsync(traineeProblemId, request);
 
         return result.IsSuccess
             ? Ok(result.Value)
             : result.ToProblem();
     }
 
-    [HttpPut("submission/{id}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSubmission([FromRoute] int id , [FromBody] SubmissionRequest request)
     {
         var result = await _submissionService.UpdateSubmissionAsync(id , request);
@@ -51,7 +51,7 @@ public class SubmissionsController(ISubmissionService submissionService) : Contr
 
     }
 
-    [HttpDelete("submission/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSubmission([FromRoute] int id)
     {
         var result = await _submissionService.DeleteSubmissionAsync(id);

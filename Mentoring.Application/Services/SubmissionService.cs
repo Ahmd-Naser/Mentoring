@@ -43,9 +43,9 @@ public class SubmissionService(ApplicationDbContext context) : ISubmissionServic
 
 
     }
-    public async Task<Result<SubmissionResponse>> CreateSubmissionAsync( SubmissionRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<SubmissionResponse>> CreateSubmissionAsync(int traineeProblemId, SubmissionRequest request, CancellationToken cancellationToken = default)
     {
-        var isTraineeProblemExist = await _context.TraineeProblems.AnyAsync(tp => tp.Id == request.TraineeProblemId);
+        var isTraineeProblemExist = await _context.TraineeProblems.AnyAsync(tp => tp.Id == traineeProblemId);
 
         if(!isTraineeProblemExist)
             return Result.Failure<SubmissionResponse>(TraineeProblemErrors.NotFound);
@@ -56,6 +56,7 @@ public class SubmissionService(ApplicationDbContext context) : ISubmissionServic
             return Result.Failure<SubmissionResponse>(SubmissionErrors.Duplicated);
 
         var submission = request.Adapt<Submission>();
+        submission.TraineeProblemId = traineeProblemId;
 
         await _context.Submissions.AddAsync(submission);
     

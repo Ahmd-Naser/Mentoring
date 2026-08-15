@@ -19,9 +19,5 @@ public class SubmissionRequestValidator : AbstractValidator<SubmissionRequest>
             .NotNull()
             .IsInEnum();
 
-        RuleFor(s => s.TraineeProblemId)
-            .NotNull()
-            .GreaterThan(0);
-
     }
 }
