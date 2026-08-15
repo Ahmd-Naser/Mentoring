@@ -1,8 +1,4 @@
 ﻿using Mentoring.Application.Contracts.TraineeProblem;
-using Mentoring.Core.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mentoring.Application.Interfaces;
 

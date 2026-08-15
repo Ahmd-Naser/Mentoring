@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mentoring.Application.Contracts.Authentication;
 
 namespace Mentoring.Application.Interfaces;
 

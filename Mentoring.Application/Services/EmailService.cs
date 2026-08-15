@@ -1,12 +1,9 @@
 ﻿using MailKit.Security;
 using Mentoring.Core.Settings;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace Mentoring.Application.Services;
 

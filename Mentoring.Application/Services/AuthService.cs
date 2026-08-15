@@ -1,18 +1,13 @@
-﻿using Mapster;
-using Mentoring.Core.Errors;
-using Mentoring.EF.Authentication;
+﻿using Mentoring.EF.Authentication;
+using Mentoring.Application.Contracts.Authentication;
 using Mentoring.EF.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace Mentoring.Application.Services;
 

@@ -1,15 +1,5 @@
-﻿using Mapster;
-using Mentoring.Core.Abstractions;
-using Mentoring.Core.Entities;
-using Mentoring.Application.Contracts.Group;
-using Mentoring.Core.Errors;
-using Mentoring.Application.Interfaces;
-using Mentoring.EF.Persistence;
-using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
-using Mentoring.Core.Enums;
+﻿using Mentoring.Application.Contracts.Group;
 using Mentoring.Application.Contracts.Problem;
-
 
 namespace Mentoring.Application.Services;
 

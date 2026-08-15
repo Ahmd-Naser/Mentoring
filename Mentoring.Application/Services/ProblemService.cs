@@ -1,13 +1,4 @@
-﻿using Mapster;
-using Mentoring.Application.Contracts.Problem;
-using Mentoring.Application.Interfaces;
-using Mentoring.Core.Abstractions;
-using Mentoring.Core.Errors;
-using Mentoring.EF.Persistence;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mentoring.Application.Contracts.Problem;
 
 namespace Mentoring.Application.Services;
 

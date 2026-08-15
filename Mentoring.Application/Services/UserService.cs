@@ -1,8 +1,6 @@
-﻿using Mapster;
-using Mentoring.Application.Contracts.Users;
+﻿using Mentoring.Application.Contracts.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Mentoring.Application.Services;
 

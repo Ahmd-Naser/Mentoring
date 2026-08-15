@@ -1,8 +1,4 @@
-﻿using Mentoring.Core.Abstractions;
-using Mentoring.Application.Contracts.Group;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mentoring.Application.Contracts.Group;
 using Mentoring.Application.Contracts.Problem;
 
 namespace Mentoring.Application.Interfaces;

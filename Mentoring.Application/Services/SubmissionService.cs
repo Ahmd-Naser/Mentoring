@@ -1,10 +1,5 @@
-﻿using Mapster;
-using Mentoring.Core.Errors;
-using Mentoring.EF.Persistence;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using Mentoring.Application.Contracts.Submission;
 
 namespace Mentoring.Application.Services;
 
