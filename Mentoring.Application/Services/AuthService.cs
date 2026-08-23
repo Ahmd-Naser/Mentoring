@@ -230,7 +230,7 @@ public class AuthService(UserManager<ApplicationUser> userManager ,
 
     public async Task<Result> ResetPasswordAsync(ResetPasswordRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        var user = await _userManager.FindByIdAsync(request.UserId);
 
         if(user is null || !user.EmailConfirmed)
             return Result.Failure(UserErrors.InvalidCode);
@@ -286,7 +286,7 @@ public class AuthService(UserManager<ApplicationUser> userManager ,
                 new Dictionary<string, string>
                 {
                     { "{{name}}" , user.FirstName },
-                    {"{{action_url}}" , $"{origin}/auth/forget-password?userId={user.Id}&code={code}" }
+                    {"{{action_url}}" , $"{origin}/auth/reset-password?userId={user.Id}&code={code}" }
                 }
             );
 

@@ -3,38 +3,28 @@ using Mentoring.Core.Settings;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Resend;
 
 
 namespace Mentoring.Application.Services;
 
-public class EmailService(IOptions<MailSettings> mailSettings) : IEmailSender
+public class EmailService(IResend resend,IOptions<MailSettings> mailSettings) : IEmailSender
 {
     private readonly MailSettings _mailSettings = mailSettings.Value;
+    private readonly IResend _resend = resend;
 
     public async Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
-        var message = new MimeMessage
+        var message = new EmailMessage
         {
-            Sender = MailboxAddress.Parse(_mailSettings.Mail),
+            From = $"{_mailSettings.DisplayName} <{_mailSettings.FromEmail}>",
+            To = email,
             Subject = subject,
-        };
-
-        message.To.Add(MailboxAddress.Parse(email)); 
-
-        var builder = new BodyBuilder
-        {
             HtmlBody = htmlMessage
         };
 
-        message.Body = builder.ToMessageBody();
+        await _resend.EmailSendAsync(message);
 
-        using var smtp = new MailKit.Net.Smtp.SmtpClient();
-        smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-        smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
 
-        await smtp.SendAsync(message);
-        smtp.Disconnect(true);
-
-         
     }
 }

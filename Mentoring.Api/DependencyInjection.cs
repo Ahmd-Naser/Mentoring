@@ -1,4 +1,5 @@
-﻿using MapsterMapper;
+﻿using FluentValidation;
+using MapsterMapper;
 using Mentoring.Application.Interfaces;
 using Mentoring.Application.Services;
 using Mentoring.Core.Entities;
@@ -7,12 +8,12 @@ using Mentoring.EF.Authentication;
 using Mentoring.EF.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using FluentValidation;
+using Resend;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Text;
 
 namespace Mentoring.Api;
 
@@ -43,11 +44,28 @@ public static class DependencyInjection
 
         services.AddHttpContextAccessor();
 
-        services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings) ));
-
+        services.EmailSenderConfiguration(configuration);
 
         return services;
 
+    }
+
+    private static IServiceCollection EmailSenderConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
+
+        // 2. تسجيل الـ HttpClient الخاص بـ Resend وتهيئته من MailSettings
+        services.AddHttpClient<ResendClient>();
+        services.AddTransient<IResend, ResendClient>();
+        services.AddOptions<ResendClientOptions>()
+            .Configure<Microsoft.Extensions.Options.IOptions<MailSettings>>((options, mailSettings) =>
+            {
+                options.ApiToken = mailSettings.Value.ApiKey;
+            });
+
+
+
+        return services;
     }
 
     private static IServiceCollection AddCORS(this IServiceCollection services)

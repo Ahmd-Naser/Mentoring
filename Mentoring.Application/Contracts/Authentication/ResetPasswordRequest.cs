@@ -5,7 +5,7 @@ using System.Text;
 namespace Mentoring.Application.Contracts.Authentication;
 
 public record ResetPasswordRequest(
-    string Email,
+    string UserId,
     string Code,
     string NewPassword
 );
