@@ -1,4 +1,6 @@
 ﻿
+
+
 namespace Mentoring.Core.Entities;
 
 public class Problem
@@ -7,6 +9,7 @@ public class Problem
     public string Name { get; set; } = string.Empty;
     public string Link { get; set; } = string.Empty;
     public string? Notes { get; set; }
+    public Difficulty Difficulty { get; set; }
 
     public string CreatedById { get; set; } = default!;
     public ApplicationUser ApplicationUser { get; set; } = default!;

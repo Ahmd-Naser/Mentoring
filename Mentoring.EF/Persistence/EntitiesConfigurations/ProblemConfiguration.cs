@@ -27,6 +27,7 @@ public class ProblemConfiguration : IEntityTypeConfiguration<Problem>
                .IsRequired(false) // اختياري (لأنه Nullable في الكلاس)
                .HasMaxLength(2000); // مساحة مريحة إذا أراد المنشئ كتابة ملاحظات طويلة
 
+
         // 3. علاقة المنشئ (CreatedBy)
         builder.HasOne(p => p.ApplicationUser)
                .WithMany() // نتركها فارغة إذا لم نضف ICollection<Problem> في جدول الـ User
