@@ -192,14 +192,21 @@ public class GroupService(ApplicationDbContext context) : IGroupService
         return Result.Success<IEnumerable<TraineeDataResponse> >(Trainees);
     }
 
-    public async Task<Result<IEnumerable<ProblemResponse>>> GetAllProblemsInGroupAsync(int groupId, CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<GroupProblemResponse>>> GetAllProblemsInGroupAsync(int groupId, CancellationToken cancellationToken = default)
     {
         var problems = await _context.ProblemGroups
             .Where(pg => pg.GroupId == groupId)
-            .ProjectToType<ProblemResponse>() 
+            .Select(pg => new GroupProblemResponse(
+                pg.ProblemId,
+                pg.Problem.Name,
+                pg.Problem.Link,
+                pg.Problem.Difficulty,
+                pg.Deadline
+            ))
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
 
 
-        return Result.Success<IEnumerable<ProblemResponse>>(problems);
+        return Result.Success<IEnumerable<GroupProblemResponse>>(problems);
     }
 }

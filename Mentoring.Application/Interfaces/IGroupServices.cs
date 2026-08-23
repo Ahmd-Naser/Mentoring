@@ -26,5 +26,5 @@ public interface IGroupService
     Task<Result> RemoveProblemFromGroupAsync(int groupId, int problemId, string requestorId, CancellationToken cancellationToken = default);
 
     Task<Result<IEnumerable<TraineeDataResponse>>> GetAllTraineesInGroupAsync(int groupId, CancellationToken cancellationToken = default);
-    Task<Result<IEnumerable<ProblemResponse>>> GetAllProblemsInGroupAsync(int groupId, CancellationToken cancellationToken = default);
+    Task<Result<IEnumerable<GroupProblemResponse>>> GetAllProblemsInGroupAsync(int groupId, CancellationToken cancellationToken = default);
 }

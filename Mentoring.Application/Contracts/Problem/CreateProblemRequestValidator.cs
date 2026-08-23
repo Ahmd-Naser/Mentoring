@@ -22,5 +22,8 @@ public class CreateProblemRequestValidator : AbstractValidator<CreateProblemRequ
 
         RuleFor(x => x.Notes)
             .MaximumLength(1000).WithMessage("Notes must not exceed 1000 characters.");
+
+        RuleFor(x => x.Difficulty)
+            .IsInEnum().WithMessage("Invalid difficulty level.");
     }
 }

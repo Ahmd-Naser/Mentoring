@@ -31,13 +31,8 @@ public class ProblemService(ApplicationDbContext context) : IProblemService
 
     public async Task<Result<ProblemResponse>> CreateProblemAsync(string userId, CreateProblemRequest request)
     {
-        var problem = new Problem
-        {
-            Name = request.Name,
-            Link = request.Link,
-            Notes = request.Notes,
-            CreatedById = userId
-        };
+        var problem = request.Adapt<Problem>();
+        problem.CreatedById = userId;
 
         await _context.Problems.AddAsync(problem);
         await _context.SaveChangesAsync();

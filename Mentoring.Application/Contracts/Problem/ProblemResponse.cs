@@ -8,5 +8,6 @@ public record ProblemResponse(
     int Id,
     string Name,
     string Link,
-    string ?Notes
+    string ?Notes,
+    Difficulty Difficulty
 );
