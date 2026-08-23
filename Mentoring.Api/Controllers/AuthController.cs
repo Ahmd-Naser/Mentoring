@@ -8,7 +8,7 @@ public class AuthController(IAuthService authService) : ControllerBase
 {
     private readonly IAuthService _authService = authService;
 
-    [HttpPost("")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody]LoginRequest request , CancellationToken cancellationToken )
     { 
         var authResult = await _authService.GetTokenAsync(request.email, request.password, cancellationToken);

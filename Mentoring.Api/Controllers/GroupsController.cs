@@ -7,10 +7,11 @@ public class GroupsController(IGroupService groupService) : ControllerBase
 {
     private readonly IGroupService _groupService = groupService;
 
-    [HttpGet("")]
+    [HttpGet("me")]
     public async Task<IActionResult> GetAllGroups()
     {
-        var groups = await _groupService.GetAllAsync();
+        var userId = User.GetUserId();
+        var groups = await _groupService.GetAllAsync(userId!);
         return Ok(groups.Value);
     }
 

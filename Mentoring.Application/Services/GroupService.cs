@@ -7,9 +7,10 @@ public class GroupService(ApplicationDbContext context) : IGroupService
 {
     private readonly ApplicationDbContext _context = context;
 
-    public async Task<Result<IEnumerable<GroupResponse>>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<GroupResponse>>> GetAllAsync(string userId, CancellationToken cancellationToken = default)
     {
         var response = await _context.Groups
+        .Where(g => g.OwnerId == userId || g.UserGroups.Any(ug => ug.UserId == userId) )
         .ProjectToType<GroupResponse>()
         .ToListAsync(cancellationToken);
 

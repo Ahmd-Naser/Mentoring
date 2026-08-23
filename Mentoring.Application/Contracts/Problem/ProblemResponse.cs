@@ -6,7 +6,7 @@ namespace Mentoring.Application.Contracts.Problem;
 
 public record ProblemResponse(
     int Id,
-    string Title,
+    string Name,
     string Link,
     string ?Notes
 );

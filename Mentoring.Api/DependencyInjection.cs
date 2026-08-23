@@ -30,6 +30,7 @@ public static class DependencyInjection
 
         services.AddAuthConfig(configuration);
 
+        services.AddCORS();
 
 
         services.AddScoped<IGroupService, GroupService>();
@@ -47,6 +48,21 @@ public static class DependencyInjection
 
         return services;
 
+    }
+
+    private static IServiceCollection AddCORS(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAngular", policy =>
+            {
+                policy.WithOrigins("http://localhost:4200")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+            });
+        });
+        return services;
     }
 
     private static IServiceCollection AddValidators(this IServiceCollection services)

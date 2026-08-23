@@ -8,7 +8,7 @@ public interface IGroupService
     // 1. الأساسيات (CRUD Operations)
     Task<Result<GroupResponse>> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
-    Task<Result<IEnumerable<GroupResponse>>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<Result<IEnumerable<GroupResponse>>> GetAllAsync(string userId, CancellationToken cancellationToken = default);
 
     Task<Result<GroupResponse>> CreateAsync(CreateGroupRequest request, string ownerId, CancellationToken cancellationToken = default);
 

@@ -27,7 +27,7 @@ public class GroupMappingConfig : IRegister
 
         config.NewConfig<ProblemGroup, ProblemResponse>()
             .Map(dest => dest.Id, src => src.ProblemId)
-            .Map(dest => dest.Title, src => src.Problem.Name )
+            .Map(dest => dest.Name, src => src.Problem.Name )
             .Map(dest => dest.Link, src => src.Problem.Link)
             .Map(dest => dest.Notes, src => src.Problem.Notes);
 

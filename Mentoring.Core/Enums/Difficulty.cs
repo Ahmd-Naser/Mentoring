@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mentoring.Core.Enums;
 
-internal enum Difficulty
+public enum Difficulty
 {
     Easy = 1,
     Medium = 2,
