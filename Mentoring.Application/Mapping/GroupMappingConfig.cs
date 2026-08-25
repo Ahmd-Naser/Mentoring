@@ -16,8 +16,8 @@ public class GroupMappingConfig : IRegister
         config.NewConfig<Group, GroupResponse>()
         // استخدام المعامل السحري ?. لحماية الكود من الـ null
             .Map(dest => dest.OwnerName, src => src.Owner != null ? string.Concat(src.Owner.FirstName, " ", src.Owner.LastName) : string.Empty)
-            .Map(dest => dest.SubscribersCount, src => src.UserGroups != null ? src.UserGroups.Count() : 0)
-            .Map(dest => dest.ProblemsCount, src => src.ProblemGroups != null ? src.ProblemGroups.Count() : 0);
+            .Map(dest => dest.MemberCount, src => src.UserGroups != null ? src.UserGroups.Count() : 0)
+            .Map(dest => dest.ProblemCount, src => src.ProblemGroups != null ? src.ProblemGroups.Count() : 0);
 
         config.NewConfig< UserGroup , TraineeDataResponse >()
             .Map(dest => dest.Id, src => src.UserId)

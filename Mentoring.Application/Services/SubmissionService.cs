@@ -58,6 +58,23 @@ public class SubmissionService(ApplicationDbContext context) : ISubmissionServic
         var submission = request.Adapt<Submission>();
         submission.TraineeProblemId = traineeProblemId;
 
+        if (request.Verdict == SubmissionVerdict.Accepted)
+        {
+            var traineeProblem = await _context.TraineeProblems.FindAsync(traineeProblemId);
+            if (traineeProblem != null)
+            {
+                traineeProblem.Status = ProblemStatus.Successful;
+
+                // إيقاف المؤقت إذا كان يعمل وحساب الوقت المنقضي
+                if (traineeProblem.LastStartedAt.HasValue)
+                {
+                    var timeSpent = (int)(DateTime.UtcNow - traineeProblem.LastStartedAt.Value).TotalSeconds;
+                    traineeProblem.TimeSpentInSeconds += Math.Min(timeSpent, 45 * 60);
+                    traineeProblem.LastStartedAt = null;
+                }
+            }
+        }
+
         await _context.Submissions.AddAsync(submission);
     
         await _context.SaveChangesAsync(cancellationToken);

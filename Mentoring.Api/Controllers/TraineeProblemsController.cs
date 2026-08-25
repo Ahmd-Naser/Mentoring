@@ -50,13 +50,13 @@ public class TraineeProblemsController(ITraineeProblemService traineeProblemServ
             : result.ToProblem();
     }
 
-    [HttpPost("group/{groupId}/problem/{problemId}/start")]
+    [HttpPost("group/{groupId}/problem/{problemId}/start-toggle")]
     public async Task<IActionResult> StartProblem([FromRoute] int groupId, [FromRoute] int problemId)
     {
         var userId = User.GetUserId();
-        var result = await _traineeProblemService.StartProblemAsync(userId!, groupId, problemId, cancellationToken: default);
+        var result = await _traineeProblemService.StartProblemToggleAsync(userId!, groupId, problemId, cancellationToken: default);
         return result.IsSuccess
-            ? Ok(result.Value)
+            ? NoContent()
             : result.ToProblem();
     }
 
@@ -82,5 +82,15 @@ public class TraineeProblemsController(ITraineeProblemService traineeProblemServ
             : result.ToProblem();
     }
 
-    
+    [HttpGet("group/{groupId}/problem/{problemId}/reviews")]
+    public async Task<IActionResult> GetProblemReviews([FromRoute] int groupId, [FromRoute] int problemId)
+    {
+        var mentorId = User.GetUserId();
+        var result = await _traineeProblemService.GetProblemReviewsAsync(mentorId!, groupId, problemId, cancellationToken: default);
+
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : result.ToProblem();
+    }
+
 }

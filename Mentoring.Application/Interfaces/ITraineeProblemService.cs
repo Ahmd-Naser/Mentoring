@@ -12,11 +12,13 @@ public interface ITraineeProblemService
 
     Task<Result<TraineeProblemMinutesResponse>> TotalMinutesSpentForSpecificProblem(string userId, int groupId, int problemId, CancellationToken cancellationToken = default);
 
-    Task<Result<TraineeProblemResponse>> StartProblemAsync(string userId, int groupId, int problemId, CancellationToken cancellationToken = default);
+    Task<Result> StartProblemToggleAsync(string userId, int groupId, int problemId, CancellationToken cancellationToken = default);
     // 3. Update / Submit Solution
     Task<Result> UpdateTraineeProblemAsync(string userId, int groupId, int problemId, UpdateTraineeProblemRequest request, CancellationToken cancellationToken = default);
 
     // 4. Delete / Unassign (مع التحقق من منفذ الطلب)
     Task<Result> DeleteTraineeProblemAsync(string userId, int groupId, int problemId, CancellationToken cancellationToken = default);
+
+    Task<Result<IEnumerable<TraineeProblemReviewResponse>>> GetProblemReviewsAsync(string mentorId,int groupId,int problemId,CancellationToken cancellationToken = default);
 
 }

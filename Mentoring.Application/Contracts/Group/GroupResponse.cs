@@ -10,6 +10,6 @@ public record GroupResponse(
     string Description,
     string OwnerId,
     string OwnerName,
-    int SubscribersCount,
-    int ProblemsCount
+    int MemberCount,
+    int ProblemCount
 );
