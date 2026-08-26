@@ -54,17 +54,6 @@ public static class DependencyInjection
     {
         services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
 
-        // 2. تسجيل الـ HttpClient الخاص بـ Resend وتهيئته من MailSettings
-        services.AddHttpClient<ResendClient>();
-        services.AddTransient<IResend, ResendClient>();
-        services.AddOptions<ResendClientOptions>()
-            .Configure<Microsoft.Extensions.Options.IOptions<MailSettings>>((options, mailSettings) =>
-            {
-                options.ApiToken = mailSettings.Value.ApiKey;
-            });
-
-
-
         return services;
     }
 
