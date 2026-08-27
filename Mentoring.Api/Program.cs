@@ -1,6 +1,9 @@
 using Mentoring.Api;
 using Scalar.AspNetCore;
 
+try
+{
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,3 +38,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+}
+catch (Exception ex)
+{
+    // كتابة تفاصيل الخطأ الكاملة في ملف crash.txt في المجلد الرئيسي
+    System.IO.File.WriteAllText("crash.txt", $"{DateTime.UtcNow}\n\n{ex.ToString()}");
+    throw;
+}
