@@ -20,6 +20,8 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+app.UseRouting();
+
 app.UseCors("AllowAngular");
 
 app.UseAuthentication();
