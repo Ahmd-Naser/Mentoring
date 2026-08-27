@@ -16,7 +16,8 @@ public class TraineeProblemMappingConfig : IRegister
             .Map(dest => dest.ProblemName, src => src.Problem.Name ?? string.Empty)
             .Map(dest => dest.ProblemLink, src => src.Problem.Link ?? string.Empty)
             .Map(dest => dest.Status, src => src.Status)
-            .Map(dest => dest.LastStartedAt, src => src.LastStartedAt);
+            .Map(dest => dest.LastStartedAt, src => src.LastStartedAt)
+            .Map(dest => dest.Notes, src => src.Problem.Notes ?? null );
 
     }
 }

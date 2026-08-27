@@ -45,9 +45,9 @@ public class SubmissionService(ApplicationDbContext context) : ISubmissionServic
     }
     public async Task<Result<SubmissionResponse>> CreateSubmissionAsync(int traineeProblemId, SubmissionRequest request, CancellationToken cancellationToken = default)
     {
-        var isTraineeProblemExist = await _context.TraineeProblems.AnyAsync(tp => tp.Id == traineeProblemId);
+        var traineeProblem = await _context.TraineeProblems.FirstOrDefaultAsync(tp => tp.Id == traineeProblemId, cancellationToken);
 
-        if(!isTraineeProblemExist)
+        if(traineeProblem is null)
             return Result.Failure<SubmissionResponse>(TraineeProblemErrors.NotFound);
 
         var isExist = await _context.Submissions.AnyAsync(s => s.CodeLink == request.CodeLink, cancellationToken);
@@ -58,25 +58,20 @@ public class SubmissionService(ApplicationDbContext context) : ISubmissionServic
         var submission = request.Adapt<Submission>();
         submission.TraineeProblemId = traineeProblemId;
 
+        await _context.Submissions.AddAsync(submission);
+
+
         if (request.Verdict == SubmissionVerdict.Accepted)
         {
-            var traineeProblem = await _context.TraineeProblems.FindAsync(traineeProblemId);
-            if (traineeProblem != null)
-            {
-                traineeProblem.Status = ProblemStatus.Successful;
-
-                // إيقاف المؤقت إذا كان يعمل وحساب الوقت المنقضي
-                if (traineeProblem.LastStartedAt.HasValue)
-                {
-                    var timeSpent = (int)(DateTime.UtcNow - traineeProblem.LastStartedAt.Value).TotalSeconds;
-                    traineeProblem.TimeSpentInSeconds += Math.Min(timeSpent, 45 * 60);
-                    traineeProblem.LastStartedAt = null;
-                }
-            }
+            traineeProblem.Status = ProblemStatus.Successful;
+            traineeProblem.LastStartedAt = null; // إيقاف التايمر تلقائياً
+        }
+        else if (traineeProblem.Status == ProblemStatus.Unattempted)
+        {
+            traineeProblem.Status = ProblemStatus.Attempted;
         }
 
-        await _context.Submissions.AddAsync(submission);
-    
+
         await _context.SaveChangesAsync(cancellationToken);
 
         var response = submission.Adapt<SubmissionResponse>();

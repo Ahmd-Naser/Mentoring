@@ -9,6 +9,7 @@ public record TraineeProblemResponse(
     int Id,
     string ProblemName,
     string  ProblemLink,
+    string? Notes,
     ProblemStatus Status,
     DateTime? LastStartedAt
 );

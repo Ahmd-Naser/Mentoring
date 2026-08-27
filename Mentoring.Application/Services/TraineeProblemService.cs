@@ -46,7 +46,7 @@ public class TraineeProblemService (ApplicationDbContext context): ITraineeProbl
                 UserId = userId,
                 GroupId = groupId,
                 ProblemId = problemId,
-                Status = ProblemStatus.InProgress,
+                Status = ProblemStatus.Unattempted,
                 LastStartedAt = DateTime.UtcNow
             };
 
@@ -60,6 +60,8 @@ public class TraineeProblemService (ApplicationDbContext context): ITraineeProbl
             .Where(tp => tp.UserId == userId && tp.GroupId == groupId && tp.ProblemId == problemId)
             .ProjectToType<TraineeProblemResponse>()
             .FirstAsync(cancellationToken);
+
+
 
         return Result.Success(response) ;
     }
@@ -241,7 +243,7 @@ public class TraineeProblemService (ApplicationDbContext context): ITraineeProbl
                 TraineeId: trainee.Id,
                 TraineeName: $"{trainee.FirstName} {trainee.LastName}".Trim(),
                 TraineeEmail: trainee.Email!,
-                Status: tp?.Status ?? ProblemStatus.NotOpened,
+                Status: tp?.Status ?? ProblemStatus.Unattempted,
                 TotalMinutes: totalSeconds / 60,
                 LastStartedAt: tp?.LastStartedAt,
                 Submissions: submissions

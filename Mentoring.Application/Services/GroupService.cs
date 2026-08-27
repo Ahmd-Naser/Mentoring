@@ -132,7 +132,7 @@ public class GroupService(ApplicationDbContext context) : IGroupService
     }
 
 
-    public async Task<Result> AddProblemToGroupAsync(int groupId, int problemId, string requestorId, CancellationToken cancellationToken = default)
+    public async Task<Result> AddProblemToGroupAsync(int groupId, int problemId, string requestorId, AssignProblemRequest request, CancellationToken cancellationToken = default)
     {
         var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId, cancellationToken);
 
@@ -151,8 +151,8 @@ public class GroupService(ApplicationDbContext context) : IGroupService
         await _context.ProblemGroups.AddAsync(new ProblemGroup
             {
                 GroupId = groupId,
-                ProblemId = problemId
-
+                ProblemId = problemId,
+                Deadline = request.Deadline
             }, cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);

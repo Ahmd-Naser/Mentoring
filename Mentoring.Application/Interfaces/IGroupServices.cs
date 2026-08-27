@@ -21,7 +21,7 @@ public interface IGroupService
 
     Task<Result> RemoveTraineeFromGroupAsync(int groupId, AddTraineeRequest request, string requestorId, CancellationToken cancellationToken = default);
 
-    Task<Result> AddProblemToGroupAsync(int groupId, int problemId, string requestorId, CancellationToken cancellationToken = default);
+    Task<Result> AddProblemToGroupAsync(int groupId, int problemId, string requestorId, AssignProblemRequest request, CancellationToken cancellationToken = default);
 
     Task<Result> RemoveProblemFromGroupAsync(int groupId, int problemId, string requestorId, CancellationToken cancellationToken = default);
 

@@ -6,8 +6,7 @@ namespace Mentoring.Core.Enums;
 
 public enum ProblemStatus
 {
-    NotOpened = 1,
-    InProgress = 2,
-    Attempted = 3,
-    Successful = 4
+    Unattempted = 1,
+    Attempted = 2,
+    Successful = 3
 }

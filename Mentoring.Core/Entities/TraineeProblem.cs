@@ -13,7 +13,7 @@ public class TraineeProblem
     public int ProblemId { get; set; }
     public int GroupId { get; set; }
 
-    public ProblemStatus Status { get; set; } = ProblemStatus.NotOpened;
+    public ProblemStatus Status { get; set; } = ProblemStatus.Unattempted;
     public int TimeSpentInSeconds { get; set; } = 0;
     public DateTime? LastStartedAt { get; set; } = default!;
 

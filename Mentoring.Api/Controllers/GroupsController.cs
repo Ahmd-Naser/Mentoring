@@ -91,10 +91,10 @@ public class GroupsController(IGroupService groupService) : ControllerBase
     }
 
     [HttpPost("{groupId:int}/problems/{problemId:int}")]
-    public async Task<IActionResult> AddProblemToGroup([FromRoute] int groupId, [FromRoute] int problemId)
+    public async Task<IActionResult> AddProblemToGroup([FromRoute] int groupId, [FromRoute] int problemId, [FromBody] AssignProblemRequest request)
     {
         var requestorId = User.GetUserId();
-        var result = await _groupService.AddProblemToGroupAsync(groupId, problemId, requestorId!);
+        var result = await _groupService.AddProblemToGroupAsync(groupId, problemId, requestorId! , request);
         return result.IsSuccess
             ? NoContent()
             : result.ToProblem();
