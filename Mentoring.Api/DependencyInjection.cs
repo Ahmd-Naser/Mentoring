@@ -31,7 +31,7 @@ public static class DependencyInjection
 
         services.AddAuthConfig(configuration);
 
-        services.AddCORS();
+        services.AddCORS(configuration);
 
 
         services.AddScoped<IGroupService, GroupService>();
@@ -57,13 +57,18 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddCORS(this IServiceCollection services)
+    private static IServiceCollection AddCORS(this IServiceCollection services, IConfiguration configuration)
     {
+
+        var allowedOrigins = configuration
+            .GetSection("AllowedOrigins")
+            .Get<string[]>() ?? Array.Empty<string>();
+
         services.AddCors(options =>
         {
             options.AddPolicy("AllowAngular", policy =>
             {
-                policy.WithOrigins("http://localhost:4200")
+                policy.WithOrigins(allowedOrigins)
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();
