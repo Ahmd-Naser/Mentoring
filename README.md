@@ -53,7 +53,7 @@ Here is a high-level overview of the main controllers:
 ## 🚀 Getting Started
 
 ### Prerequisites
-*   [.NET SDK](https://dotnet.microsoft.com/download) (v8.0 or later)
+*   [.NET SDK](https://dotnet.microsoft.com/download) (v10.0 or later)
 *   [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 
 ### Installation & Setup
@@ -87,3 +87,9 @@ Here is a high-level overview of the main controllers:
 - `Templates/`: Contains `EmailConfirmation.html` and `ForgetPassword.html` for stylized email communications.
 - `Errors/`: Domain-specific error definitions ensuring explicit and readable error states.
 - `Abstractions/`: Contains the `Result<T>` pattern implementations to avoid throwing exceptions for business logic failures.
+
+  ## Testing Email & password
+  TESTINGUSER@MENTORING.COM
+  
+  Testing@2026
+  
